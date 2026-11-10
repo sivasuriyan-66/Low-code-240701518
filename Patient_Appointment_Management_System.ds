@@ -1,0 +1,1275 @@
+/*
+ * Author       : sivasuriyan.a.2024.cse_ra518
+ * Generated on : 10-Nov-2026 13:11:38
+ * Version      : 1.0
+ */
+ application "Patient Appointment Management System"
+ {
+ 	date format = "dd-MMM-yyyy"
+ 	time zone = "America/Los_Angeles"
+ 	time format = "24-hr"
+
+ 	forms
+	{
+		form appointment_booking
+		{
+			displayname = "Appointment Booking"
+			success message = "Data Added Successfully!"
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			appointment_submitted_on
+			(
+    			type = datetime
+				displayname = "Appointment Submitted On"
+				timedisplayoptions = "hh:mm:ss"
+				alloweddays = 0,1,2,3,4,5,6
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			patient_photo
+			(
+    			type = text
+				displayname = "Patient Photo"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			previous_medical_report
+			(
+    			type = text
+				displayname = "Previous Medical Report"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			body_temperature_f
+			(
+    			type = text
+				displayname = "Body Temperature"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			accompanying_family_members
+			(
+    			type = text
+				displayname = "Accompanying Family Members"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			previous_report_portal_url
+			(
+    			type = url
+				displayname = "Previous Report Portal URL"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			symptom_video
+			(
+    			type = text
+				displayname = "Symptom Video"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			symptom_voice_note
+			(
+    			type = text
+				displayname = "Symptom Voice Note"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			requires_ambulance_pickup
+			(
+				type = radiobuttons
+				displayname = "Requires Ambulance Pickup"
+				values = {"No","Yes"}
+				others option = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			consultation_fee
+			(
+				displayname = "Consultation Fee"
+				type = USD
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			insurance_coverage_percent
+			(
+    			type = percentage
+				displayname = "Insurance Coverage Percent"
+				maxchar = 16
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			net_payable_fee
+			(
+				type = decimal
+				displayname = "Net Payable Fee"
+				maxchar = 16
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			clinic_guidelines_display
+			(
+    			type = textarea
+				displayname = "Clinic Guidelines Display"
+				height = 100px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			patient_digital_signature
+			(
+    			type = text
+				displayname = "Patient Digital Signature"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			appointment_qr_code
+			(
+    			type = text
+				displayname = "Appointment QR Code"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			doctor_availability_lookup
+			(
+				type = picklist	
+				displayname = "Doctor Availability"
+				values  = doctors_master.ID
+    			displayformat = [doctor_name.first_name]
+				allow new entries
+				[
+					displayname = "Add New"
+				]
+				sortorder = ascending
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+			blueprint components
+			{
+				stages = {"Appointment Request Received","Doctor Availability Check","Appointment Rejected","Appointment Scheduled","Appointment Pending Review","Appointment Confirmed","Appointment Rescheduled","Appointment Cancelled","Appointment In Progress","Consultation Completed","Appointment On Hold","Appointment Closed"}
+			}
+		}
+		form doctors_master
+		{
+			displayname = "Doctors Master"
+			success message = "Doctors Master Added Successfully"
+			Section
+			(
+				type = section
+	 			row = 1
+	 			column = 0   
+				width = medium
+			)
+			doctor_name
+			(
+    			type = name
+				displayname = "Doctor Name"
+     			prefix
+     			(
+	     			 type = prefix
+	     			 displayname ="Prefix"
+	     			 visibility = false
+	     			 value = {"Mr.","Mrs.","Ms."}
+     			) 
+     			first_name
+     			(
+	     			 type = first_name
+	     			 displayname ="First Name"
+     			) 
+     			last_name
+     			(
+	     			 type = last_name
+	     			 displayname ="Last Name"
+	     			 visibility = false
+     			) 
+     			suffix
+     			(
+	     			 type = suffix
+	     			 displayname ="Suffix"
+	     			 visibility = false
+     			) 
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			specialization
+			(
+				type = picklist
+				displayname = "Specialization"
+				values = {"Neurology","Pediatrics","Orthopedics","General Medicine","Cardiology"}
+				others option = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			available_time_slots
+			(
+				type = list	
+				displayname = "Available Time Slots"
+				values = {"5 PM-8 PM","2 PM-5 PM","10 AM-1 PM","9 AM-12 PM"}
+				height = 13px
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			consultation_fee
+			(
+				displayname = "Consultation Fee"
+				type = USD
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			doctor_contact_number
+			(
+    			type = phonenumber
+				displayname = "Doctor Contact Number"
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+			availability_status
+			(
+				type = radiobuttons
+				displayname = "Availability Status"
+				values = {"Available","Unavailable"}
+				others option = true
+	 			row = 1
+	 			column = 1   
+				width = medium
+			)
+	
+			actions
+			{
+				on add
+				{
+					submit
+					(
+   						type = submit
+   						displayname = "Submit"
+					)
+					reset
+					(
+   						type = reset
+   						displayname = "Reset"
+					)
+				}
+				on edit
+				{
+					update
+					(
+   						type = submit
+   						displayname = "Update"
+					)
+					cancel
+					(
+   						type = cancel
+   						displayname = "Cancel"
+					)
+				}
+			}
+		}
+	}
+	reports
+	{
+		list appointment_booking_Report
+		{
+			displayName = "Appointment Booking Report"
+			show all rows from appointment_booking    
+			(
+				appointment_submitted_on as "Appointment Submitted On"
+				patient_photo as "Patient Photo"
+				previous_medical_report as "Previous Medical Report"
+				body_temperature_f as "Body Temperature"
+				accompanying_family_members as "Accompanying Family Members"
+				previous_report_portal_url as "Previous Report Portal URL"
+				symptom_video as "Symptom Video"
+				symptom_voice_note as "Symptom Voice Note"
+				requires_ambulance_pickup as "Requires Ambulance Pickup"
+				consultation_fee as "Consultation Fee"
+				(
+					display = total,average,min,max	
+				)
+				insurance_coverage_percent as "Insurance Coverage Percent"
+				(
+					display = total,average,min,max	
+				)
+				net_payable_fee as "Net Payable Fee"
+				clinic_guidelines_display as "Clinic Guidelines Display"
+				patient_digital_signature as "Patient Digital Signature"
+				appointment_qr_code as "Appointment QR Code"
+				doctor_availability_lookup as "Doctor Availability"
+			)
+		}
+		list doctors_master_Report
+		{
+			displayName = "All Doctors Masters"
+			show all rows from doctors_master    
+			(
+				doctor_name  as "Doctor Name"
+				specialization as "Specialization"
+				available_time_slots as "Available Time Slots"
+				consultation_fee as "Consultation Fee"
+				(
+					display = total,average,min,max	
+				)
+				doctor_contact_number as "Doctor Contact Number"
+				availability_status as "Availability Status"
+			)
+			conditional formatting
+			(
+				"New Formatting1"
+				{
+				condition = (specialization == "Neurology")
+				fields = [specialization]
+				format = "color:#ffffff;background-color:#765f89;"
+				}
+				"New Formatting2"
+				{
+				condition = (specialization == "Orthopedics")
+				fields = [specialization]
+				format = "color:#000000;background-color:#1bbc9b;"
+				}
+				"New Formatting3"
+				{
+				condition = (specialization == "Pediatrics")
+				fields = [specialization]
+				format = "color:#ffffff;background-color:#e84c3d;"
+				}
+			)
+		}
+		kanban doctors_master_by_specialization
+		{
+			displayName = "Specializations"
+			show all rows from doctors_master    
+			(
+				doctor_name  as "Doctor Name"
+				specialization as "Specialization"
+				available_time_slots as "Available Time Slots"
+				consultation_fee as "Consultation Fee"
+				(
+					display = total,average,min,max	
+				)
+				doctor_contact_number as "Doctor Contact Number"
+				availability_status as "Availability Status"
+			)
+			options
+			(
+	 			display field = specialization
+	 		)
+		}
+	}
+	pages
+	{
+		page DashBoard
+		{
+			displayname = "Dashboard"
+			Content="<zml    \t\t\n\t\t\n\t\t\n\t\t\n\t\t\n>\n\t<layout>\n\t<row>\n\t<column\n   \t\t width='25%'\n   \t>\n\t<panel elementName='Panel 1'\n \n >\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tbgColor = '#FFFFFF'\n\n\t\twidth = '100%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '10px'\n\tbgColor = '#D1CDB8'\n\n\t\twidth = '100%'\n\t\thAlign = 'center'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginBottom = '5px'\n\tcolor = '#000000'\n\tsize = '16px'\n\tfontFamily = 'RobotoSlab, arimo, sans-serif' \n\ttype = 'Text'\n\n\tbgColor = 'rgba(0, 0, 0, 0)'\n\n\n\n\n\n\n\t  value = 'Total Consultation Fees'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr><pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '20px'\n\tbgColor = 'rgba(0, 0, 0, 0)'\n\n\t\twidth = '100%'\n\t\thAlign = 'center'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n>\n\t<image  \n\t\tmarginRight = '0px' \n\tmarginTop = '0px'\n\n\tcolor = '#FFFFFF'\n\tbgColor = '#ADA579'\n\twidth = '40px'\n\theight = '40px'\n\ttype = 'icon'\n\tvalue = 'shopping-cash-register'\n\tsize = '20px'\n\tcornerRadius = '20px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n>\n\t<text \n\n\tmarginLeft = '10px'\n\tcolor = '#ADA579'\n\tsize = '36px'\n\tbold = 'true' \n\tfontFamily = 'RobotoSlab, arimo, sans-serif' \n\ttype = 'Form Data'\n\n\tbgColor = 'transparent'\n\n\n\tdisplayType = 'actual'\n\tdecimalPlaces = '2'\n\tthousandsSeperator = 'LOCALE'\n\tdecimalSeperator = 'DOT'\n\tnumberScale = 'none'\n\n\n\n\n\t  value = 'thisapp.appointment_booking.consultation_fee.sum'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</panel>\n</column><column\n   \t\t width='25%'\n   \t>\n\t<panel elementName='Panel 2'\n \n >\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tbgColor = '#FFFFFF'\n\n\t\twidth = '100%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '10px'\n\tbgColor = '#D6BDD9'\n\n\t\twidth = '100%'\n\t\thAlign = 'center'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginBottom = '5px'\n\tcolor = '#000000'\n\tsize = '16px'\n\tfontFamily = 'RobotoSlab, arimo, sans-serif' \n\ttype = 'Text'\n\n\tbgColor = 'rgba(0, 0, 0, 0)'\n\n\n\n\n\n\n\t  value = 'Average Insurance Coverage Percents'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr><pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '20px'\n\tbgColor = 'rgba(0, 0, 0, 0)'\n\n\t\twidth = '100%'\n\t\thAlign = 'center'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n>\n\t<image  \n\t\tmarginRight = '0px' \n\tmarginTop = '0px'\n\n\tcolor = '#FFFFFF'\n\tbgColor = '#A079AD'\n\twidth = '40px'\n\theight = '40px'\n\ttype = 'icon'\n\tvalue = 'business-percentage-39'\n\tsize = '20px'\n\tcornerRadius = '20px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n>\n\t<text \n\n\tmarginLeft = '10px'\n\tcolor = '#A079AD'\n\tsize = '36px'\n\tbold = 'true' \n\tfontFamily = 'RobotoSlab, arimo, sans-serif' \n\ttype = 'Form Data'\n\n\tbgColor = 'rgba(0, 0, 0, 0)'\n\n\n\tdisplayType = 'actual'\n\tdecimalPlaces = '2'\n\tthousandsSeperator = 'LOCALE'\n\tdecimalSeperator = 'DOT'\n\tnumberScale = 'none'\n\n\n\n\n\t  value = 'thisapp.appointment_booking.insurance_coverage_percent.avg'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</panel>\n</column><column\n   \t\t width='25%'\n   \t>\n\t<panel elementName='Panel 3'\n \n >\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tbgColor = '#FFFFFF'\n\n\t\twidth = '100%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '10px'\n\tbgColor = '#BAD1B8'\n\n\t\twidth = '100%'\n\t\thAlign = 'center'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginBottom = '5px'\n\tcolor = '#000000'\n\tsize = '16px'\n\tfontFamily = 'RobotoSlab, arimo, sans-serif' \n\ttype = 'Text'\n\n\tbgColor = 'rgba(0, 0, 0, 0)'\n\n\n\n\n\n\n\t  value = 'Average of Net Payable Fee'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr><pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '20px'\n\tbgColor = 'rgba(0, 0, 0, 0)'\n\n\t\twidth = '100%'\n\t\thAlign = 'center'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n>\n\t<image  \n\t\tmarginRight = '0px' \n\tmarginTop = '0px'\n\n\tcolor = '#FFFFFF'\n\tbgColor = '#7DAD79'\n\twidth = '40px'\n\theight = '40px'\n\ttype = 'icon'\n\tvalue = 'sport-basketball-13'\n\tsize = '20px'\n\tcornerRadius = '20px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n>\n\t<text \n\n\tmarginLeft = '10px'\n\tcolor = '#7DAD79'\n\tsize = '36px'\n\tbold = 'true' \n\tfontFamily = 'RobotoSlab, arimo, sans-serif' \n\ttype = 'Form Data'\n\n\tbgColor = 'rgba(0, 0, 0, 0)'\n\n\n\tdisplayType = 'actual'\n\tdecimalPlaces = '2'\n\tthousandsSeperator = 'LOCALE'\n\tdecimalSeperator = 'DOT'\n\tnumberScale = 'none'\n\n\n\n\n\t  value = 'thisapp.appointment_booking.net_payable_fee.avg'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</panel>\n</column><column\n   \t\t width='25%'\n   \t>\n\t<panel elementName='Panel 4'\n \n >\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tbgColor = '#FFFFFF'\n\n\t\twidth = '100%'\n\t\thAlign = 'left'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '10px'\n\tbgColor = '#B6B6D4'\n\n\t\twidth = '100%'\n\t\thAlign = 'center'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n>\n\t<text \n\n\tmarginBottom = '5px'\n\tcolor = '#000000'\n\tsize = '16px'\n\tfontFamily = 'RobotoSlab, arimo, sans-serif' \n\ttype = 'Text'\n\n\tbgColor = 'rgba(0, 0, 0, 0)'\n\n\n\n\n\n\n\t  value = 'Total Consultation Fees'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr><pr \n\t\t\twidth='fill'\n\t\theight='fill'\n>\n\t<pc \n\t\tpadding = '20px'\n\tbgColor = 'rgba(0, 0, 0, 0)'\n\n\t\twidth = '100%'\n\t\thAlign = 'center'\n\t\tvAlign = 'middle'\n>\n\t<pr \n\t\t\twidth='auto'\n\t\theight='auto'\n>\n\t<pc \n\t\n>\n\t<image  \n\t\tmarginRight = '0px' \n\tmarginTop = '0px'\n\n\tcolor = '#FFFFFF'\n\tbgColor = '#7A78B3'\n\twidth = '40px'\n\theight = '40px'\n\ttype = 'icon'\n\tvalue = 'shopping-cash-register'\n\tsize = '20px'\n\tcornerRadius = '20px'\n\ticonType = 'outline'\n/>\n</pc><pc \n\t\n>\n\t<text \n\n\tmarginLeft = '10px'\n\tcolor = '#7A78B3'\n\tsize = '36px'\n\tbold = 'true' \n\tfontFamily = 'RobotoSlab, arimo, sans-serif' \n\ttype = 'Form Data'\n\n\tbgColor = 'rgba(0, 0, 0, 0)'\n\n\n\tdisplayType = 'actual'\n\tdecimalPlaces = '2'\n\tthousandsSeperator = 'LOCALE'\n\tdecimalSeperator = 'DOT'\n\tnumberScale = 'none'\n\n\n\n\n\t  value = 'thisapp.doctors_master.consultation_fee.sum'\n>\n</text>\n\n</pc>\n</pr>\n</pc>\n</pr>\n</pc>\n</pr>\n</panel>\n</column>\n</row><row>\n\t<column\n   \t\t width='50%'\n   \t>\n\t<chart \n\telementName='Chart 1'\n\n\t\n\ttitle = 'Consultation Fee by Insurance Coverage Percent'\n\t\n\t\ttitleSize = '16px'\n\ttype = 'Scatter'\n\txtitle = 'Consultation Fee'\n\tytitle = 'Insurance Coverage Percent'\n\tbgColor = 'rgb(255, 255, 255)'\n\ttheme = '#CBC4BC'\n\tlegendPos = 'none'\n\theightType = 'auto'\n\theightValue = '300px'\n\tappLinkName = 'thisapp'\n\tformLinkName = 'appointment_booking'\n\txfield = 'consultation_fee'\n\tyfields = 'value:insurance_coverage_percent'\n\tgroupBy = 'appointment_submitted_on'\n\t\tDelugeCriteria = 'consultation_fee is not null'\n/>\n\n</column><column\n   \t\t width='50%'\n   \t>\n\t<chart \n\telementName='Chart 2'\n\n\t\n\ttitle = 'Requires Ambulance Pickup by Consultation Fee'\n\t\n\t\ttitleSize = '16px'\n\ttype = 'Bar'\n\txtitle = 'Requires Ambulance Pickup'\n\tytitle = 'Consultation Fee'\n\tbgColor = 'rgb(255, 255, 255)'\n\ttheme = '#b082ba'\n\tlegendPos = 'none'\n\theightType = 'auto'\n\theightValue = '300px'\n\tappLinkName = 'thisapp'\n\tformLinkName = 'appointment_booking'\n\txfield = 'requires_ambulance_pickup'\n\tyfields = 'sum:consultation_fee'\n\tgroupBy = 'appointment_submitted_on'\n\t\tDelugeCriteria = 'requires_ambulance_pickup is not null &amp;&amp; requires_ambulance_pickup != &quot;&quot;'\n/>\n\n</column>\n</row><row>\n\t<column\n   \t\t width='50%'\n   \t>\n\t<chart \n\telementName='Chart 3'\n\n\t\n\ttitle = 'Distribution by Requires Ambulance Pickup'\n\t\n\t\ttitleSize = '16px'\n\ttype = 'Pie'\n\txtitle = 'Requires Ambulance Pickup'\n\tytitle = 'Requires Ambulance Pickup'\n\tbgColor = 'rgb(255, 255, 255)'\n\ttheme = '#88c2b7'\n\tlegendPos = 'center.top'\n\theightType = 'auto'\n\theightValue = '300px'\n\tappLinkName = 'thisapp'\n\tformLinkName = 'appointment_booking'\n\txfield = 'requires_ambulance_pickup'\n\tyfields = 'count:requires_ambulance_pickup'\n\tgroupBy = 'appointment_submitted_on'\n\t\tDelugeCriteria = 'requires_ambulance_pickup is not null &amp;&amp; requires_ambulance_pickup != &quot;&quot;'\n/>\n\n</column><column\n   \t\t width='50%'\n   \t>\n\t<chart \n\telementName='Chart 4'\n\n\t\n\ttitle = 'Distribution by Previous Medical Report'\n\t\n\t\ttitleSize = '16px'\n\ttype = 'Bar'\n\txtitle = 'Previous Medical Report'\n\tytitle = 'Count of Previous Medical Report'\n\tbgColor = 'rgb(255, 255, 255)'\n\ttheme = '#ba8282'\n\tlegendPos = 'none'\n\theightType = 'auto'\n\theightValue = '300px'\n\tappLinkName = 'thisapp'\n\tformLinkName = 'appointment_booking'\n\txfield = 'previous_medical_report'\n\tyfields = 'count:previous_medical_report'\n\tgroupBy = 'appointment_submitted_on'\n\t\tDelugeCriteria = 'previous_medical_report is not null &amp;&amp; previous_medical_report != &quot;&quot;'\n/>\n\n</column>\n</row><row>\n\t<column\n   \t\t width='100%'\n   \t>\n\t<report \n\telementName='Report'\n\n\t\tappLinkName = 'thisapp'\n\t\tlinkName = 'appointment_booking_Report'\n\t\n\t\tiszreport = 'false'\n\t\t\t\t\tzc_Footer = 'false'\n\t\t\t\t\tzc_AddRec = 'false'\n\t\t\t\t\tzc_EditRec = 'false'\n\t\t\t\t\tzc_Print = 'false'\n\t\t\t\t\tzc_Export = 'false'\n\t\t\t\t\tzc_DelRec = 'false'\n\t\t\t\t\tzc_DuplRec = 'false'\n\t\t\t\t\tzc_Search = 'false'\n\t\t\t\t\tzc_EditBulkRec = 'false'\n\t\t\t\t\tzc_BulkDelete = 'false'\n\t\t\t\t\tzc_BulkDuplicate = 'false'\n\theightType = 'auto'\n\theightValue = '700'\n/>\n</column>\n</row>\n</layout>\n</zml>"
+		}
+	}
+
+
+
+
+		workflow
+		{
+		form
+		{
+			auto_calculate_net_fee as "Auto-Calculate Net Fee"
+			{
+				type =  form
+				form = appointment_booking
+
+				record event = on add or edit
+
+				on user input of consultation_fee
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											// Calculate net payable fee based on consultation fee and insurance coverage percentage
+										consultationFee = input.consultation_fee;
+										insuranceCoveragePercent = input.insurance_coverage_percent;
+										// Validate that consultation fee is not null or empty
+										if(consultationFee.isNull())
+										{
+											alert "Please enter a valid consultation fee";
+											return;
+										}
+										// Validate that insurance coverage percent is not null or empty
+										if(insuranceCoveragePercent.isNull())
+										{
+											alert "Please enter a valid insurance coverage percentage";
+											return;
+										}
+										// Convert values to decimal for calculation
+										consultationFeeDecimal = consultationFee.toDecimal();
+										insuranceCoverageDecimal = insuranceCoveragePercent.toDecimal();
+										// Calculate the insurance amount (consultation fee * insurance coverage percentage / 100)
+										insuranceAmount = consultationFeeDecimal * insuranceCoverageDecimal / 100;
+										// Calculate net payable fee (consultation fee - insurance amount)
+										netPayableFee = consultationFeeDecimal - insuranceAmount;
+										// Set the calculated net payable fee to the field
+										input.net_payable_fee = netPayableFee;
+										// Log the calculation details for debugging
+										info "Consultation Fee: " + consultationFeeDecimal.toString();
+										info "Insurance Coverage: " + insuranceCoverageDecimal.toString();
+										info "Insurance Amount: " + insuranceAmount.toString();
+										info "Net Payable Fee: " + netPayableFee.toString();
+						)
+					}
+				}
+
+			}
+			validate_ambulance_requirement as "Validate Ambulance Requirement"
+			{
+				type =  form
+				form = appointment_booking
+
+				record event = on add or edit
+
+				on validate
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											// Check if ambulance pickup is required
+										if(input.requires_ambulance_pickup == "Yes")
+										{
+											// Check if pickup details exist (using symptom_voice_note or symptom_video as placeholder for pickup details)
+											// Since no specific pickup details field exists, we check if any relevant field has value
+											// Assuming pickup details might be in symptom_voice_note or symptom_video or a dedicated field
+											// For this example, checking if symptom_voice_note is empty as a proxy for missing pickup details
+											if(input.symptom_voice_note.isBlank() && input.symptom_video.isBlank())
+											{
+												alert "Ambulance pickup is required but no pickup details have been provided. Please provide the necessary details before submitting.";
+												cancel submit;
+											}
+										}
+						)
+					}
+				}
+
+			}
+			notify_doctor_new_booking as "Notify Doctor of New Booking"
+			{
+				type =  form
+				form = appointment_booking
+
+				record event = on add
+
+				on success
+				{
+					actions 
+					{
+						custom deluge script
+						(
+											// Fetch the doctor record using the lookup field from the appointment booking
+										if(input.doctor_availability_lookup.isNull() == false)
+										{
+											doctorRecord = doctors_master[ID == input.doctor_availability_lookup];
+											// Check if doctor email is available
+											if(doctorRecord.doctor_contact_number.isNull() == false)
+											{
+												// Send email notification to the doctor
+												sendmail
+												[
+													from :zoho.loginuserid
+													to :doctorRecord.doctor_contact_number
+													subject :"New Appointment Booking Notification"
+													message :"A new appointment has been booked. Please check your appointment schedule."
+												]
+											}
+										}
+						)
+					}
+				}
+
+			}
+		}
+
+		schedule
+		{
+			daily_availability_check as "Daily Availability Check"
+			{
+				type =  schedule
+					status = inactive
+				start = "2024-05-26 15:53:12"
+				time zone = "Asia/Kolkata"
+				on start
+				{
+					actions 
+					{
+					on load
+					(
+						// Fetch all appointments where the preferred doctor is now unavailable
+										unavailableDoctors = doctors_master[availability_status == "Unavailable"];
+										for each  doctor in unavailableDoctors
+										{
+											// Get the doctor's full name
+											doctorName = doctor.doctor_name.first_name.concat(" ").concat(doctor.doctor_name.last_name);
+											// Fetch all appointments for this doctor
+											patientAppointments = appointment_booking[doctor_availability_lookup.ID == doctor.ID];
+											if(patientAppointments.count() > 0)
+											{
+												for each  appointment in patientAppointments
+												{
+													// Get patient email from the appointment record
+													patientEmail = appointment.Added_User.email;
+													// Check if patient email is valid
+													if(!patientEmail.isNull() && !patientEmail.isEmpty())
+													{
+														// Send notification email to the patient
+														sendmail
+														[
+															from :zoho.loginuserid
+															to :patientEmail
+															subject :"Important Update: Your Doctor's Availability Changed"
+															message :"Dear Patient,\n\nWe would like to inform you that your preferred doctor, " + doctorName + ", is currently unavailable.\n\nPlease contact our clinic to reschedule your appointment.\n\nThank you for your understanding.\n\nBest regards,\nPatient Appointment Management System"
+														]
+													}
+												}
+											}
+										}
+					)
+					}
+				}
+			}
+		}
+
+
+		blueprint
+		{
+    			appointment_scheduling_process as "Appointment Scheduling Process"
+    			{
+        			type = Blueprint
+        			form = appointment_booking
+        			start
+        			{
+        			}
+        			stages
+        			{
+           			"Appointment Request Received"
+           			{
+           			}
+           			"Doctor Availability Check"
+           			{
+           			}
+           			"Appointment Rejected"
+           			{
+           			}
+           			"Appointment Scheduled"
+           			{
+           			}
+           			"Appointment Pending Review"
+           			{
+           			}
+           			"Appointment Confirmed"
+           			{
+           			}
+           			"Appointment Rescheduled"
+           			{
+           			}
+           			"Appointment Cancelled"
+           			{
+           			}
+           			"Appointment In Progress"
+           			{
+           			}
+           			"Consultation Completed"
+           			{
+           			}
+           			"Appointment On Hold"
+           			{
+           			}
+           			"Appointment Closed"
+           			{
+           			}
+        			}
+        			transitions
+        			{
+        			}
+    			}
+		}
+
+
+	}
+	share_settings
+	{
+			"Clinic Administrator"
+			{
+				name = "Clinic Administrator"
+				type = Users_Permissions
+				permissions = {Chat:false, Predefined:false, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "Manage the master list of doctors and their specializations \n"
+				ModulePermissions
+				{
+					appointment_booking
+					{
+						enabled= Create,Viewall,Modifyall,Import,Export,Tab 
+						allFieldsVisible= true 
+						ReportPermissions
+						{
+							appointment_booking_Report={"View","Edit","Delete"}
+						}
+					}
+					doctors_master
+					{
+						enabled= Create,Viewall,Modifyall,Import,Export,Tab 
+						allFieldsVisible= true 
+						ReportPermissions
+						{
+							doctors_master_by_specialization={"View","Edit","Delete"}
+							doctors_master_Report={"View","Edit","Delete"}
+						}
+					}
+				}
+			}
+			"Read"
+			{
+				name = "Read"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "This profile will have read permission for all components\n"
+			}
+			"Write"
+			{
+				name = "Write"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "This profile will have write permission for all components\n"
+			}
+			"Administrator"
+			{
+				name = "Administrator"
+				type = Users_Permissions
+				permissions = {Chat:true, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "This profile will have all the permissions.\n"
+			}
+			"Developer"
+			{
+				name = "Developer"
+				type = Developer
+				permissions = {Chat:false, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "Developer Profile\n"
+			}
+			"Billing Specialist"
+			{
+				name = "Billing Specialist"
+				type = Users_Permissions
+				permissions = {Chat:false, Predefined:false, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "Calculate net payable fees based on consultation costs and insurance percentages \n"
+				ModulePermissions
+				{
+					appointment_booking
+					{
+						enabled= Viewall,Export 
+						allFieldsVisible= true 
+						ReportPermissions
+						{
+							appointment_booking_Report={"View"}
+						}
+					}
+				}
+			}
+			"Clinical Coordinator"
+			{
+				name = "Clinical Coordinator"
+				type = Users_Permissions
+				permissions = {Chat:false, Predefined:false, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "Review symptom videos and voice notes submitted by patients prior to visits \n"
+				ModulePermissions
+				{
+					appointment_booking
+					{
+						enabled= Viewall,Modifyall 
+						allFieldsVisible= true 
+						ReportPermissions
+						{
+							appointment_booking_Report={"View","Edit","Delete"}
+						}
+					}
+				}
+			}
+			"Medical Receptionist"
+			{
+				name = "Medical Receptionist"
+				type = Users_Permissions
+				permissions = {Chat:false, Predefined:false, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "Verify patient digital signatures and review uploaded medical reports \n"
+				ModulePermissions
+				{
+					appointment_booking
+					{
+						enabled= Viewall,Modifyall,Export 
+						allFieldsVisible= true 
+						ReportPermissions
+						{
+							appointment_booking_Report={"View","Edit","Delete"}
+						}
+					}
+				}
+			}
+			"Family Member"
+			{
+				name = "Family Member"
+				type = Customer_Portal
+				permissions = {Chat:false, Predefined:false, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "Register accompanying family members for the patient's appointment \n"
+				ModulePermissions
+				{
+					appointment_booking
+					{
+						allFieldsVisible= true 
+						ReportPermissions
+						{
+							appointment_booking_Report={"View","Edit"}
+						}
+					}
+				}
+			}
+			"Patient"
+			{
+				name = "Patient"
+				type = Customer_Portal
+				permissions = {Chat:false, Predefined:false, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "Submit appointment requests with personal photos and medical history \n"
+				ModulePermissions
+				{
+					appointment_booking
+					{
+						enabled= Create,Tab 
+						allFieldsVisible= true 
+						ReportPermissions
+						{
+							appointment_booking_Report={"View","Edit"}
+						}
+					}
+				}
+			}
+			"Customer"
+			{
+				name = "Customer"
+				type = Customer_Portal
+				permissions = {Chat:true, Predefined:true, ApiAccess:true, PIIAccess:true, ePHIAccess:true}
+				description = "This is the default profile having only add and view permission.\n"
+			}
+			roles
+			{
+				"CEO"
+				{
+					description = "User belonging to this role can access data of all other users."
+				}
+			}
+	}
+
+
+	web
+	{
+		forms
+		{
+			form appointment_booking
+			{
+				label placement = left
+			}
+			form doctors_master
+			{
+				label placement = left
+			}
+		}
+		reports
+		{
+			report appointment_booking_Report
+			{
+				quickview
+				(
+					layout
+					(
+						datablock1
+						(
+							fields
+							(
+								appointment_submitted_on as "Appointment Submitted On"
+								patient_photo as "Patient Photo"
+								previous_medical_report as "Previous Medical Report"
+								body_temperature_f as "Body Temperature"
+								accompanying_family_members as "Accompanying Family Members"
+								previous_report_portal_url as "Previous Report Portal URL"
+								symptom_video as "Symptom Video"
+								symptom_voice_note as "Symptom Voice Note"
+								requires_ambulance_pickup as "Requires Ambulance Pickup"
+								consultation_fee as "Consultation Fee"
+								insurance_coverage_percent as "Insurance Coverage Percent"
+								net_payable_fee as "Net Payable Fee"
+								clinic_guidelines_display as "Clinic Guidelines Display"
+								patient_digital_signature as "Patient Digital Signature"
+								appointment_qr_code as "Appointment QR Code"
+								doctor_availability_lookup as "Doctor Availability"
+							)
+						)
+					)
+						menu
+						(
+							header
+							(
+								Edit 
+								Duplicate 
+								Delete 
+								Print 
+								Add 
+								Import 
+								Export 
+							)
+						record
+						(
+							Edit   	   
+							Duplicate   	   
+							Delete   	   
+							Print   	   
+    					)
+						)
+    				action
+    				(
+						on click
+						(
+							View Record   	   
+    					)
+						on right click
+						(
+							Edit   	   
+							Duplicate   	   
+							Delete   	   
+							Print   	   
+							View Record   	   
+    					)
+     				)
+				)
+
+				detailview
+				(
+					layout
+					(
+						datablock1
+						(
+		     				title = "Overview"
+							fields
+							(
+								appointment_submitted_on as "Appointment Submitted On"
+								patient_photo as "Patient Photo"
+								previous_medical_report as "Previous Medical Report"
+								body_temperature_f as "Body Temperature"
+								accompanying_family_members as "Accompanying Family Members"
+								previous_report_portal_url as "Previous Report Portal URL"
+								symptom_video as "Symptom Video"
+								symptom_voice_note as "Symptom Voice Note"
+								requires_ambulance_pickup as "Requires Ambulance Pickup"
+								consultation_fee as "Consultation Fee"
+								insurance_coverage_percent as "Insurance Coverage Percent"
+								net_payable_fee as "Net Payable Fee"
+								clinic_guidelines_display as "Clinic Guidelines Display"
+								patient_digital_signature as "Patient Digital Signature"
+								appointment_qr_code as "Appointment QR Code"
+								doctor_availability_lookup as "Doctor Availability"
+							)
+						)
+						datablock2
+						(
+		     				title = "Doctor Availability"
+		     				related field = doctor_availability_lookup
+							fields
+							(
+								doctor_name as "Doctor Name"
+								specialization as "Specialization"
+								available_time_slots as "Available Time Slots"
+								consultation_fee as "Consultation Fee"
+								doctor_contact_number as "Doctor Contact Number"
+								availability_status as "Availability Status"
+							)
+						)
+					)
+						menu
+						(
+							header
+							(
+								Edit 
+								Duplicate 
+								Delete 
+								Print 
+							)
+						)
+				)
+			}
+			report doctors_master_Report
+			{
+				quickview
+				(
+					layout
+					(
+						datablock1
+						(
+							fields
+							(
+								doctor_name as "Doctor Name"
+								specialization as "Specialization"
+								available_time_slots as "Available Time Slots"
+								consultation_fee as "Consultation Fee"
+								doctor_contact_number as "Doctor Contact Number"
+								availability_status as "Availability Status"
+							)
+						)
+					)
+						menu
+						(
+							header
+							(
+								Edit 
+								Duplicate 
+								Delete 
+								Print 
+								Add 
+								Import 
+								Export 
+							)
+						record
+						(
+							Edit   	   
+							Duplicate   	   
+							Delete   	   
+							Print   	   
+    					)
+						)
+    				action
+    				(
+						on click
+						(
+							View Record   	   
+    					)
+						on right click
+						(
+							Edit   	   
+							Duplicate   	   
+							Delete   	   
+							Print   	   
+							View Record   	   
+    					)
+     				)
+				)
+
+				detailview
+				(
+					layout
+					(
+						datablock1
+						(
+		     				title = "Overview"
+							fields
+							(
+								doctor_name as "Doctor Name"
+								specialization as "Specialization"
+								available_time_slots as "Available Time Slots"
+								consultation_fee as "Consultation Fee"
+								doctor_contact_number as "Doctor Contact Number"
+								availability_status as "Availability Status"
+							)
+						)
+					)
+						menu
+						(
+							header
+							(
+								Edit 
+								Duplicate 
+								Delete 
+								Print 
+							)
+						)
+				)
+			}
+			report doctors_master_by_specialization
+			{
+				quickview
+				(
+					layout
+					(
+		 				type = 1
+						datablock1
+						(
+							layout type = 1
+							fields
+							(
+								doctor_name as "Doctor Name"
+								available_time_slots as "Available Time Slots"
+							)
+						)
+					)
+						menu
+						(
+							header
+							(
+								Edit 
+								Duplicate 
+								Delete 
+								Print 
+								Add 
+								Import 
+								Export 
+							)
+						record
+						(
+							Edit   	   
+							Duplicate   	   
+							Delete   	   
+							Print   	   
+    					)
+						)
+    				action
+    				(
+						on click
+						(
+							View Record   	   
+    					)
+						on right click
+						(
+							Edit   	   
+							Duplicate   	   
+							Delete   	   
+							Print   	   
+							View Record   	   
+    					)
+     				)
+				)
+
+				detailview
+				(
+					layout
+					(
+						datablock1
+						(
+							fields
+							(
+								doctor_name as "Doctor Name"
+								specialization as "Specialization"
+								available_time_slots as "Available Time Slots"
+								consultation_fee as "Consultation Fee"
+								doctor_contact_number as "Doctor Contact Number"
+								availability_status as "Availability Status"
+							)
+						)
+					)
+						menu
+						(
+							header
+							(
+								Edit 
+								Duplicate 
+								Delete 
+								Print 
+							)
+						)
+				)
+			}
+		}
+		menu
+		{
+			space Space
+			{
+				displayname = "Space"
+				icon = "objects-spaceship"
+
+				section Section_1
+				{
+					displayname = "Dashboard"
+					icon = "ui-1-dashboard-half"
+					page DashBoard
+					{
+						icon = "ui-1-dashboard-half"
+					}
+				}
+				section Section_2
+				{
+					displayname = "Appointment Booking"
+					icon = "location-appointment"
+					form  appointment_booking
+					{
+						icon = "ui-1-bold-add"
+					}
+					report appointment_booking_Report
+					{
+						icon = "location-appointment"
+					}
+				}
+				section Section_3
+				{
+					displayname = "Doctors Masters"
+					icon = "health-bag-49"
+					form  doctors_master
+					{
+						icon = "ui-1-bold-add"
+					}
+					report doctors_master_Report
+					{
+						icon = "travel-world"
+					}
+					report doctors_master_by_specialization
+					{
+						icon = "design-2-selection"
+					}
+				}
+				section ZC_App_Preferences
+				{
+					displayname = "App Preferences"
+					icon = "design-app"
+					systemcomponent
+					{
+						type = localization
+						displayname = "Language Selection"
+						icon = "education-language"
+					}
+					systemcomponent
+					{
+						type = connection
+						displayname = "Integrations"
+						icon = "tech-2-connection"
+					}
+				}
+				section ZC_Approvals
+				{
+					displayname = "Approvals"
+					icon = "ui-2-hourglass"
+					systemcomponent
+					{
+						type = approval
+						approval status = pending
+						displayname = "Pending Tasks"
+						icon = "ui-2-hourglass"
+					}
+					systemcomponent
+					{
+						type = approval
+						approval status = completed
+						displayname = "Completed Tasks"
+						icon = "design-todo"
+					}
+				}
+				section SharedAnalytics_Section
+				{
+					type = shared_user_report_section
+					displayname = "Reports"
+					icon = "business-chart-bar-33"
+				}
+			}
+			preference
+			{
+				icon
+				{
+					style = solid
+					show = {space,section,component}
+				}
+			}
+		}
+		customize
+		{
+			new theme = 4
+			font = "lato"
+			color options
+			{
+				color = "6"
+			}
+			logo
+			{
+				preference = "none"
+				placement = "left"
+			}
+		}
+	}
+	phone
+	{
+		customize
+		{
+			layout = twocolumn
+			font = "default"
+			style = "3"
+			color options
+			{
+				color = chryslerpurple
+			}
+			logo
+			{
+				preference = "none"
+			}
+		}
+	}
+	tablet
+	{
+		customize
+		{
+			layout = slidingpane
+			font = "default"
+			style = "3"
+			color options
+			{
+				color = amethyst
+			}
+			logo
+			{
+				preference = "none"
+			}
+		}
+	}
+	translation
+{
+{"Language_Settings":{"LANGAGUE_WITH_LOGIN":"browser"}}
+}
+}
